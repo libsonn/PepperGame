@@ -1,4 +1,4 @@
-package com.example.pepper_game
+package com.libson.pepper_game
 
 import io.flutter.embedding.android.FlutterActivity
 
