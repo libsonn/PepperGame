@@ -15,9 +15,9 @@ class CalculationBloc extends Bloc<CalculationEvent, CalculationState> {
       : super(
           CalculationInitial(
             calculationModel: new CalculationModel(
-                numberOfPeppersToBuy: 12,
-                numberOfPeppersToSell: 1,
-                priceOnBuy: 0.0),
+              numberOfPeppersToBuy: 12,
+              numberOfPeppersToSell: 1,
+            ),
           ),
         );
 

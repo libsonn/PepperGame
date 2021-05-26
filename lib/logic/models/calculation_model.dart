@@ -1,15 +1,9 @@
 class CalculationModel {
   final int numberOfPeppersToBuy;
   final int numberOfPeppersToSell;
-  final double priceOnBuy;
   final double priceOnSell = 2.0;
-  final double totalPrice;
 
-  CalculationModel(
-      {this.numberOfPeppersToBuy,
-      this.numberOfPeppersToSell,
-      this.priceOnBuy,
-      this.totalPrice});
+  CalculationModel({this.numberOfPeppersToBuy, this.numberOfPeppersToSell});
 
   CalculationModel copyWith(
       {int numberOfPeppersToBuy,
@@ -20,8 +14,6 @@ class CalculationModel {
       numberOfPeppersToBuy: numberOfPeppersToBuy ?? this.numberOfPeppersToBuy,
       numberOfPeppersToSell:
           numberOfPeppersToSell ?? this.numberOfPeppersToSell,
-      priceOnBuy: priceOnBuy ?? this.priceOnBuy,
-      totalPrice: totalPrice ?? this.totalPrice,
     );
   }
 }
