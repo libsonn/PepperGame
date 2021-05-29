@@ -1,12 +1,19 @@
 class Merchant {
-  double cash = 10.0;
-  int numberOfPeppers = 0;
+  final double cash;
+  final int numberOfPeppers;
+  final double previousTotalPrice;
+  Merchant({
+    this.cash = 10,
+    this.numberOfPeppers = 0,
+    this.previousTotalPrice = 0.0,
+  });
 
-  Merchant({this.cash, this.numberOfPeppers});
-
-  Merchant copyWith({double cash, int numberOfPeppers}) {
+  Merchant copyWith(
+      {double cash, int numberOfPeppers, double previousTotalPrice}) {
     return Merchant(
-        cash: cash ?? this.cash,
-        numberOfPeppers: numberOfPeppers ?? this.numberOfPeppers);
+      cash: cash ?? this.cash,
+      numberOfPeppers: numberOfPeppers ?? this.numberOfPeppers,
+      previousTotalPrice: previousTotalPrice ?? this.previousTotalPrice,
+    );
   }
 }

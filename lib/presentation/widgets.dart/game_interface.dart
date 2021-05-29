@@ -22,6 +22,10 @@ class GameInterface extends StatelessWidget {
               style: TextStyle(color: redTextColor, fontSize: 25.0),
             ),
             Text(
+              'Price for peppers: ${merchantState.merchant.previousTotalPrice.toStringAsFixed(2)}\$',
+              style: TextStyle(color: redTextColor, fontSize: 25.0),
+            ),
+            Text(
               merchantState.merchant.numberOfPeppers != 1
                   ? 'You have ${merchantState.merchant.numberOfPeppers} peppers'
                   : 'You have ${merchantState.merchant.numberOfPeppers} pepper',

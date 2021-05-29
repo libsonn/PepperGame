@@ -43,16 +43,21 @@ class MerchantBloc extends Bloc<MerchantEvent, MerchantState> {
     if (calculationLogic.canBuyPeppers(
         price: totalPrice, budget: state.merchant.cash)) {
       merchant = state.merchant.copyWith(
-          cash: state.merchant.cash - totalPrice,
-          numberOfPeppers: state.merchant.numberOfPeppers + event.quantity);
+        cash: state.merchant.cash - totalPrice,
+        numberOfPeppers: state.merchant.numberOfPeppers + event.quantity,
+        previousTotalPrice: totalPrice,
+      );
       yield MerchantDidAction(merchant: merchant);
     } else {
-      if (state.merchant.cash - 0.2 > 1.5) {
+      if (state.merchant.cash - 0.2 >
+          state.merchant.numberOfPeppers * -2.00 + 1.5) {
         merchant = state.merchant.copyWith(
           cash: state.merchant.cash - 0.2,
+          previousTotalPrice: totalPrice,
         );
+
         yield MerchantDidAction(merchant: merchant);
-      } else if (state.merchant.cash - 0.2 < 1.5) {
+      } else {
         yield LostGame(merchant: merchant);
       }
     }
@@ -68,9 +73,12 @@ class MerchantBloc extends Bloc<MerchantEvent, MerchantState> {
       merchant = state.merchant.copyWith(
           cash: state.merchant.cash + event.quantity * 2.0,
           numberOfPeppers: state.merchant.numberOfPeppers - event.quantity);
-
-      yield MerchantDidAction(merchant: merchant);
+    } else {
+      merchant = state.merchant.copyWith(
+          cash: state.merchant.cash + state.merchant.numberOfPeppers * 2.0,
+          numberOfPeppers: 0);
     }
+    yield MerchantDidAction(merchant: merchant);
   }
 
   Stream<MerchantState> mapResetToState(
