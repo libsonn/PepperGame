@@ -31,12 +31,6 @@ class CalculationBloc extends Bloc<CalculationEvent, CalculationState> {
     if (event is ChangedNumbersOfPeppersToSell) {
       yield* mapChangedNumberOfPeppersToSellToState(event);
     }
-    if (event is CalculateValueToBuyPeppers) {
-      yield* mapCalculateValueToBuyPeppersToState(event);
-    }
-    if (event is CalculateValueToSellPeppers) {
-      yield* mapCalculateValueToSellPeppersToState(event);
-    }
   }
 
   Stream<CalculationState> mapChangedNumberOfPeppersToBuyToState(
@@ -60,21 +54,4 @@ class CalculationBloc extends Bloc<CalculationEvent, CalculationState> {
 
     yield CalculationChanged(calculationModel: newCalculationModel);
   }
-
-  Stream<CalculationState> mapCalculateValueToBuyPeppersToState(
-    CalculateValueToBuyPeppers event,
-  ) async* {
-    CalculationModel newCalculationModel;
-
-    double randomPepperPrice = calculationLogic.getRandomPepperPrice();
-
-    newCalculationModel =
-        state.calculationModel.copyWith(priceOnBuy: randomPepperPrice);
-
-    yield CalculationChanged(calculationModel: newCalculationModel);
-  }
-
-  Stream<CalculationState> mapCalculateValueToSellPeppersToState(
-    CalculateValueToSellPeppers event,
-  ) async* {}
 }

@@ -16,11 +16,3 @@ class ChangedNumbersOfPeppersToSell extends CalculationEvent {
   final int numberOfPeppersToSell;
   ChangedNumbersOfPeppersToSell({@required this.numberOfPeppersToSell});
 }
-
-class CalculateValueToBuyPeppers extends CalculationEvent {
-  CalculateValueToBuyPeppers();
-}
-
-class CalculateValueToSellPeppers extends CalculationEvent {
-  CalculateValueToSellPeppers();
-}

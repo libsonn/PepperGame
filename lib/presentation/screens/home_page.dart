@@ -23,7 +23,7 @@ class _HomePageState extends State<HomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image.asset(
-              'lib/assets/pepper.png',
+              'assets/pepper.png',
               scale: 4.0,
             ),
             SizedBox(

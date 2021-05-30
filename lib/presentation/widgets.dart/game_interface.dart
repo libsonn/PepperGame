@@ -18,17 +18,17 @@ class GameInterface extends StatelessWidget {
         Column(
           children: [
             Text(
-              'Your budget: ${merchantState.merchant.cash.toStringAsFixed(2)}\$',
+              'Your budget: ${merchantState.merchant.calculationLogic.cash.toStringAsFixed(2)}\$',
               style: TextStyle(color: redTextColor, fontSize: 25.0),
             ),
             Text(
-              'Price for peppers: ${merchantState.merchant.previousTotalPrice.toStringAsFixed(2)}\$',
+              'Price for peppers: ${merchantState.merchant.calculationLogic.totalPrice.toStringAsFixed(2)}\$',
               style: TextStyle(color: redTextColor, fontSize: 25.0),
             ),
             Text(
-              merchantState.merchant.numberOfPeppers != 1
-                  ? 'You have ${merchantState.merchant.numberOfPeppers} peppers'
-                  : 'You have ${merchantState.merchant.numberOfPeppers} pepper',
+              merchantState.merchant.calculationLogic.numberOfPeppers != 1
+                  ? 'You have ${merchantState.merchant.calculationLogic.numberOfPeppers} peppers'
+                  : 'You have ${merchantState.merchant.calculationLogic.numberOfPeppers} pepper',
               style: TextStyle(color: redTextColor, fontSize: 25.0),
             ),
           ],

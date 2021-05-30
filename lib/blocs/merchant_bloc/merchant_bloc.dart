@@ -12,10 +12,15 @@ part 'merchant_event.dart';
 part 'merchant_state.dart';
 
 class MerchantBloc extends Bloc<MerchantEvent, MerchantState> {
-  CalculationLogic calculationLogic;
+  final CalculationLogic calculationLogic;
   MerchantBloc({@required this.calculationLogic})
-      : super(MerchantInitial(
-            merchant: new Merchant(cash: 10.0, numberOfPeppers: 0)));
+      : super(
+          MerchantInitial(
+            merchant: new Merchant(
+              calculationLogic: calculationLogic,
+            ),
+          ),
+        );
 
   @override
   Stream<MerchantState> mapEventToState(
@@ -36,29 +41,30 @@ class MerchantBloc extends Bloc<MerchantEvent, MerchantState> {
     BuyPeppers event,
   ) async* {
     Merchant merchant;
-    double priceForOnePepper = calculationLogic.getRandomPepperPrice();
-    double totalPrice = calculationLogic.calculatePeppersValue(
-        priceForOnePepper: priceForOnePepper, quantity: event.quantity);
 
-    if (calculationLogic.canBuyPeppers(
-        price: totalPrice, budget: state.merchant.cash)) {
-      merchant = state.merchant.copyWith(
-        cash: state.merchant.cash - totalPrice,
-        numberOfPeppers: state.merchant.numberOfPeppers + event.quantity,
-        previousTotalPrice: totalPrice,
-      );
+    calculationLogic.payForBuying();
+    calculationLogic.calculatePeppersValue(quantity: event.quantity);
+
+    if (calculationLogic.canBuyPeppers()) {
+      calculationLogic.buyPeppers(quantity: event.quantity);
+      merchant = state.merchant.copyWith(calculationLogic: calculationLogic);
+
       yield MerchantDidAction(merchant: merchant);
     } else {
-      if (state.merchant.cash - 0.2 >
-          state.merchant.numberOfPeppers * -2.00 + 1.5) {
+      if (state.merchant.calculationLogic.cash >
+          state.merchant.calculationLogic.numberOfPeppers * -2.00 + 1.5) {
         merchant = state.merchant.copyWith(
-          cash: state.merchant.cash - 0.2,
-          previousTotalPrice: totalPrice,
+          calculationLogic: calculationLogic,
         );
 
         yield MerchantDidAction(merchant: merchant);
       } else {
-        yield LostGame(merchant: merchant);
+        calculationLogic.resetCalculator();
+        yield LostGame(
+          merchant: Merchant(
+            calculationLogic: CalculationLogic(),
+          ),
+        );
       }
     }
   }
@@ -67,25 +73,19 @@ class MerchantBloc extends Bloc<MerchantEvent, MerchantState> {
     SellPeppers event,
   ) async* {
     Merchant merchant;
-    if (calculationLogic.canSellPeppers(
-        quantityToSell: event.quantity,
-        havePeppers: state.merchant.numberOfPeppers)) {
-      merchant = state.merchant.copyWith(
-          cash: state.merchant.cash + event.quantity * 2.0,
-          numberOfPeppers: state.merchant.numberOfPeppers - event.quantity);
-    } else {
-      merchant = state.merchant.copyWith(
-          cash: state.merchant.cash + state.merchant.numberOfPeppers * 2.0,
-          numberOfPeppers: 0);
-    }
+    calculationLogic.sellPeppers(quantity: event.quantity);
+    merchant = state.merchant.copyWith(calculationLogic: calculationLogic);
     yield MerchantDidAction(merchant: merchant);
   }
 
   Stream<MerchantState> mapResetToState(
     Reset event,
   ) async* {
+    calculationLogic.resetCalculator();
     yield MerchantInitial(
-      merchant: new Merchant(cash: 10.0, numberOfPeppers: 0),
+      merchant: new Merchant(
+        calculationLogic: new CalculationLogic(),
+      ),
     );
   }
 }

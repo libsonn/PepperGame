@@ -1,19 +1,15 @@
+import 'package:flutter/material.dart';
+import 'package:pepper_game/logic/calculation_logic.dart';
+
 class Merchant {
-  final double cash;
-  final int numberOfPeppers;
-  final double previousTotalPrice;
+  final CalculationLogic calculationLogic;
   Merchant({
-    this.cash = 10,
-    this.numberOfPeppers = 0,
-    this.previousTotalPrice = 0.0,
+    @required this.calculationLogic,
   });
 
-  Merchant copyWith(
-      {double cash, int numberOfPeppers, double previousTotalPrice}) {
+  Merchant copyWith({CalculationLogic calculationLogic}) {
     return Merchant(
-      cash: cash ?? this.cash,
-      numberOfPeppers: numberOfPeppers ?? this.numberOfPeppers,
-      previousTotalPrice: previousTotalPrice ?? this.previousTotalPrice,
+      calculationLogic: calculationLogic ?? this.calculationLogic,
     );
   }
 }
