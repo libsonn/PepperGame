@@ -41,12 +41,9 @@ class MerchantBloc extends Bloc<MerchantEvent, MerchantState> {
     BuyPeppers event,
   ) async* {
     Merchant merchant;
+    calculationLogic.buyPeppers(quantity: event.quantity);
 
-    calculationLogic.payForBuying();
-    calculationLogic.calculatePeppersValue(quantity: event.quantity);
-
-    if (calculationLogic.canBuyPeppers()) {
-      calculationLogic.buyPeppers(quantity: event.quantity);
+    if (calculationLogic.purchase.isSuccessful) {
       merchant = state.merchant.copyWith(calculationLogic: calculationLogic);
 
       yield MerchantDidAction(merchant: merchant);

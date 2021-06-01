@@ -1,16 +1,16 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:pepper_game/logic/models/purchase_model.dart';
 
 class CalculationLogic {
+  Purchase purchase;
   double cash;
   int numberOfPeppers;
-  double totalPrice;
 
   CalculationLogic({
     this.cash = 10.0,
     this.numberOfPeppers = 0,
-    this.totalPrice = 0.0,
   });
 
   double getRandomPepperPrice() {
@@ -19,13 +19,27 @@ class CalculationLogic {
     return Random().nextDouble() * (max - min) + min;
   }
 
-  void calculatePeppersValue({@required int quantity}) {
-    totalPrice = getRandomPepperPrice() * quantity;
+  double getTotalCost({int quantity, double pepperPrice}) {
+    return quantity * pepperPrice + 0.2;
   }
 
   void buyPeppers({@required int quantity}) {
-    cash -= totalPrice;
-    numberOfPeppers += quantity;
+    double pepperPrice = getRandomPepperPrice();
+    double totalPrice =
+        getTotalCost(quantity: quantity, pepperPrice: pepperPrice);
+    if (totalPrice <= cash) {
+      purchase = PurchaseSuccesful(
+        pepperPrice: pepperPrice,
+        quantity: quantity,
+      );
+    } else if (totalPrice > cash) {
+      purchase = PurchaseUnsuccesful(
+        pepperPrice: pepperPrice,
+        quantity: quantity,
+      );
+    }
+    numberOfPeppers += purchase.quantityBought;
+    cash -= purchase.toPay;
   }
 
   void sellPeppers({@required int quantity}) {
@@ -38,17 +52,8 @@ class CalculationLogic {
     }
   }
 
-  void payForBuying() {
-    cash -= 0.2;
-  }
-
-  bool canBuyPeppers() {
-    return cash >= totalPrice;
-  }
-
   void resetCalculator() {
     cash = 10.0;
     numberOfPeppers = 0;
-    totalPrice = 0.0;
   }
 }

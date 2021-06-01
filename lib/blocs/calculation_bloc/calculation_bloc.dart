@@ -13,8 +13,8 @@ class CalculationBloc extends Bloc<CalculationEvent, CalculationState> {
   CalculationLogic calculationLogic;
   CalculationBloc({@required this.calculationLogic})
       : super(
-          CalculationInitial(
-            calculationModel: new CalculationModel(
+          CalculationChanged(
+            calculationModel: CalculationModel(
               numberOfPeppersToBuy: 12,
               numberOfPeppersToSell: 1,
             ),

@@ -10,35 +10,61 @@ class GameInterface extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.max,
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Column(
-          children: [
-            Text(
-              'Your budget: ${merchantState.merchant.calculationLogic.cash.toStringAsFixed(2)}\$',
-              style: TextStyle(color: redTextColor, fontSize: 25.0),
-            ),
-            Text(
-              'Price for peppers: ${merchantState.merchant.calculationLogic.totalPrice.toStringAsFixed(2)}\$',
-              style: TextStyle(color: redTextColor, fontSize: 25.0),
-            ),
-            Text(
-              merchantState.merchant.calculationLogic.numberOfPeppers != 1
-                  ? 'You have ${merchantState.merchant.calculationLogic.numberOfPeppers} peppers'
-                  : 'You have ${merchantState.merchant.calculationLogic.numberOfPeppers} pepper',
-              style: TextStyle(color: redTextColor, fontSize: 25.0),
-            ),
-          ],
-        ),
-        SizedBox(
-          height: 40.0,
-        ),
-        BuyPeppersPicker(),
-        SellPeppersPicker(),
-      ],
-    );
+    if (merchantState is MerchantInitial) {
+      return Column(
+        children: [
+          BuyPeppersPicker(),
+          SellPeppersPicker(),
+        ],
+      );
+    } else
+      return Column(
+        children: [
+          Column(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(
+                'Previous transaction:',
+                style: TextStyle(
+                    color: redTextColor,
+                    fontSize: 25.0,
+                    fontWeight: FontWeight.bold),
+              ),
+              Text(
+                'Price for pepper: ${merchantState.merchant.calculationLogic.purchase.pepperPrice.toStringAsFixed(2)}\$',
+                style: TextStyle(color: redTextColor, fontSize: 25.0),
+              ),
+              Text(
+                'Total price: ${merchantState.merchant.calculationLogic.purchase.totalPrice.toStringAsFixed(2)}\$',
+                style: TextStyle(color: redTextColor, fontSize: 25.0),
+              ),
+              Text(
+                'Wanted to buy: ${merchantState.merchant.calculationLogic.purchase.quantityToBuy} peppers',
+                style: TextStyle(color: redTextColor, fontSize: 25.0),
+              ),
+              SizedBox(
+                height: 20.0,
+              ),
+              Text(
+                'Your budget: ${merchantState.merchant.calculationLogic.cash.toStringAsFixed(2)}\$',
+                style: TextStyle(color: redTextColor, fontSize: 25.0),
+              ),
+              Text(
+                merchantState.merchant.calculationLogic.numberOfPeppers != 1
+                    ? 'You have ${merchantState.merchant.calculationLogic.numberOfPeppers} peppers'
+                    : 'You have ${merchantState.merchant.calculationLogic.numberOfPeppers} pepper',
+                style: TextStyle(color: redTextColor, fontSize: 25.0),
+              ),
+              SizedBox(
+                height: 40.0,
+              ),
+              BuyPeppersPicker(),
+              SellPeppersPicker(),
+            ],
+          ),
+        ],
+      );
   }
 }
