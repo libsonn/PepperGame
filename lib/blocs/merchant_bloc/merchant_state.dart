@@ -2,30 +2,26 @@ part of 'merchant_bloc.dart';
 
 @immutable
 abstract class MerchantState extends Equatable {
-  final Merchant merchant;
-  MerchantState({@required this.merchant});
 }
 
 class MerchantInitial extends MerchantState {
-  final Merchant merchant;
-  MerchantInitial({@required this.merchant}) : super(merchant: merchant);
+  MerchantInitial() : super();
 
   @override
-  List<Object> get props => [merchant];
+  List<Object> get props => [];
 }
 
 class MerchantDidAction extends MerchantState {
-  final Merchant merchant;
-  MerchantDidAction({@required this.merchant}) : super(merchant: merchant);
+  final Purchase purchase;
+  MerchantDidAction({@required this.purchase}) : super();
 
   @override
-  List<Object> get props => [merchant];
+  List<Object> get props => [purchase];
 }
 
 class LostGame extends MerchantState {
-  final Merchant merchant;
-  LostGame({@required this.merchant}) : super(merchant: merchant);
+  LostGame() : super();
 
   @override
-  List<Object> get props => [merchant];
+  List<Object> get props => [];
 }

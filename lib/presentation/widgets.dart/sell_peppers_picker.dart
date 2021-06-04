@@ -66,6 +66,7 @@ class SellPeppersPicker extends StatelessWidget {
                     );
                   },
                   text: state.calculationModel.numberOfPeppersToSell != 1
+                      //TODO usunąć round
                       ? 'Sell ${state.calculationModel.numberOfPeppersToSell.round()} peppers'
                       : 'Sell ${state.calculationModel.numberOfPeppersToSell.round()} pepper');
             },

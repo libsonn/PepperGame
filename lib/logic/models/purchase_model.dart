@@ -1,51 +1,51 @@
-import 'package:flutter/material.dart';
-
 abstract class Purchase {
   final double pepperPrice;
+  final bool isSuccessful;
   final int quantityToBuy;
-  double totalPrice;
-  double toPay;
-  bool isSuccessful;
-  int quantityBought;
 
-  Purchase({
-    @required this.pepperPrice,
-    @required this.quantityToBuy,
-  }) {
-    totalPrice = pepperPrice * quantityToBuy + 0.2;
-  }
+  double get totalPrice => pepperPrice * quantityToBuy;
+
+  double get toPay;
+
+  int get quantityBought;
+
+  Purchase(
+    this.isSuccessful,
+    this.pepperPrice,
+    this.quantityToBuy,
+  );
 }
 
-class PurchaseSuccesful extends Purchase {
-  final double pepperPrice;
-  final int quantity;
-
-  PurchaseSuccesful({
-    @required this.pepperPrice,
-    @required this.quantity,
+class PurchaseSuccessful extends Purchase {
+  PurchaseSuccessful({
+    double pepperPrice,
+    int quantityToBuy,
   }) : super(
-          pepperPrice: pepperPrice,
-          quantityToBuy: quantity,
-        ) {
-    isSuccessful = true;
-    toPay = totalPrice;
-    quantityBought = quantity;
-  }
+          true,
+          pepperPrice,
+          quantityToBuy,
+        );
+
+  @override
+  int get quantityBought => quantityToBuy;
+
+  @override
+  double get toPay => totalPrice + 0.2;
 }
 
-class PurchaseUnsuccesful extends Purchase {
-  final double pepperPrice;
-  final int quantity;
-
-  PurchaseUnsuccesful({
-    @required this.pepperPrice,
-    @required this.quantity,
+class PurchaseUnsuccessful extends Purchase {
+  PurchaseUnsuccessful({
+    double pepperPrice,
+    int quantityToBuy,
   }) : super(
-          pepperPrice: pepperPrice,
-          quantityToBuy: quantity,
-        ) {
-    isSuccessful = false;
-    toPay = 0.2;
-    quantityBought = 0;
-  }
+          false,
+          pepperPrice,
+          quantityToBuy,
+        );
+
+  @override
+  int get quantityBought => 0;
+
+  @override
+  double get toPay => 0.2;
 }

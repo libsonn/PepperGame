@@ -10,8 +10,7 @@ part 'calculation_event.dart';
 part 'calculation_state.dart';
 
 class CalculationBloc extends Bloc<CalculationEvent, CalculationState> {
-  CalculationLogic calculationLogic;
-  CalculationBloc({@required this.calculationLogic})
+  CalculationBloc()
       : super(
           CalculationChanged(
             calculationModel: CalculationModel(

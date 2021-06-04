@@ -7,19 +7,18 @@ import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
 import 'package:pepper_game/logic/calculation_logic.dart';
 import 'package:pepper_game/logic/models/merchant_model.dart';
+import 'package:pepper_game/logic/models/purchase_model.dart';
 
 part 'merchant_event.dart';
+
 part 'merchant_state.dart';
 
 class MerchantBloc extends Bloc<MerchantEvent, MerchantState> {
   final CalculationLogic calculationLogic;
+
   MerchantBloc({@required this.calculationLogic})
       : super(
-          MerchantInitial(
-            merchant: new Merchant(
-              calculationLogic: calculationLogic,
-            ),
-          ),
+          MerchantInitial(),
         );
 
   @override
@@ -40,28 +39,16 @@ class MerchantBloc extends Bloc<MerchantEvent, MerchantState> {
   Stream<MerchantState> mapBuyPeppersToState(
     BuyPeppers event,
   ) async* {
-    Merchant merchant;
-    calculationLogic.buyPeppers(quantity: event.quantity);
+    Purchase purchase = calculationLogic.buyPeppers(quantity: event.quantity);
 
-    if (calculationLogic.purchase.isSuccessful) {
-      merchant = state.merchant.copyWith(calculationLogic: calculationLogic);
-
-      yield MerchantDidAction(merchant: merchant);
+    if (purchase.isSuccessful) {
+      yield MerchantDidAction(purchase: purchase);
     } else {
-      if (state.merchant.calculationLogic.cash >
-          state.merchant.calculationLogic.numberOfPeppers * -2.00 + 1.5) {
-        merchant = state.merchant.copyWith(
-          calculationLogic: calculationLogic,
-        );
-
-        yield MerchantDidAction(merchant: merchant);
+      if (calculationLogic.canStillPlay) {
+        yield MerchantDidAction(purchase: purchase);
       } else {
         calculationLogic.resetCalculator();
-        yield LostGame(
-          merchant: Merchant(
-            calculationLogic: CalculationLogic(),
-          ),
-        );
+        yield LostGame();
       }
     }
   }
@@ -69,7 +56,7 @@ class MerchantBloc extends Bloc<MerchantEvent, MerchantState> {
   Stream<MerchantState> mapSellPeppersToState(
     SellPeppers event,
   ) async* {
-    Merchant merchant;
+    //TODO Poprawić Merchannt
     calculationLogic.sellPeppers(quantity: event.quantity);
     merchant = state.merchant.copyWith(calculationLogic: calculationLogic);
     yield MerchantDidAction(merchant: merchant);

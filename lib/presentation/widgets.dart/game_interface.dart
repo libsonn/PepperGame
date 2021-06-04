@@ -32,6 +32,7 @@ class GameInterface extends StatelessWidget {
                     fontSize: 25.0,
                     fontWeight: FontWeight.bold),
               ),
+              //TODO Poprawić błędy, pokazać stan kasy i papryk na starcie, nie pokazywać info o kupnie jeśli sprzedajemy
               Text(
                 'Price for pepper: ${merchantState.merchant.calculationLogic.purchase.pepperPrice.toStringAsFixed(2)}\$',
                 style: TextStyle(color: redTextColor, fontSize: 25.0),

@@ -65,6 +65,7 @@ class BuyPeppersPicker extends StatelessWidget {
                     ),
                   );
                 },
+                //TODO usunąć round
                 text: state.calculationModel.numberOfPeppersToBuy != 1
                     ? 'Buy ${state.calculationModel.numberOfPeppersToBuy.round()} peppers'
                     : 'Buy ${state.calculationModel.numberOfPeppersToBuy.round()} pepper',

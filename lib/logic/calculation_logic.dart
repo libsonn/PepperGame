@@ -2,44 +2,41 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:pepper_game/logic/models/purchase_model.dart';
+import 'package:pepper_game/logic/pepper_price_generator.dart';
+
 
 class CalculationLogic {
-  Purchase purchase;
+
+  final PepperPriceGenerator generator;
+
   double cash;
   int numberOfPeppers;
 
   CalculationLogic({
+    this.generator,
     this.cash = 10.0,
     this.numberOfPeppers = 0,
   });
 
-  double getRandomPepperPrice() {
-    double min = 1.5;
-    double max = 2.5;
-    return Random().nextDouble() * (max - min) + min;
-  }
-
-  double getTotalCost({int quantity, double pepperPrice}) {
-    return quantity * pepperPrice + 0.2;
-  }
-
-  void buyPeppers({@required int quantity}) {
-    double pepperPrice = getRandomPepperPrice();
+  Purchase buyPeppers({@required int quantity}) {
+    Purchase purchase;
+    double pepperPrice = _getRandomPepperPrice();
     double totalPrice =
-        getTotalCost(quantity: quantity, pepperPrice: pepperPrice);
+    getTotalCost(quantity: quantity, pepperPrice: pepperPrice);
     if (totalPrice <= cash) {
-      purchase = PurchaseSuccesful(
+      purchase = PurchaseSuccessful(
         pepperPrice: pepperPrice,
-        quantity: quantity,
+        quantityToBuy: quantity,
       );
     } else if (totalPrice > cash) {
-      purchase = PurchaseUnsuccesful(
+      purchase = PurchaseUnsuccessful(
         pepperPrice: pepperPrice,
-        quantity: quantity,
+        quantityToBuy: quantity,
       );
     }
     numberOfPeppers += purchase.quantityBought;
     cash -= purchase.toPay;
+    return purchase;
   }
 
   void sellPeppers({@required int quantity}) {
@@ -55,5 +52,13 @@ class CalculationLogic {
   void resetCalculator() {
     cash = 10.0;
     numberOfPeppers = 0;
+  }
+
+  bool get canStillPlay => cash > numberOfPeppers * -2.00 + 1.5;
+
+  double _getRandomPepperPrice() => generator.generatePrice();
+
+  double getTotalCost({int quantity, double pepperPrice}) {
+    return quantity * pepperPrice + 0.2;
   }
 }
