@@ -33,10 +33,13 @@ class _HomePageState extends State<HomePage> {
               builder: (context, merchantState) {
                 if (merchantState is LostGame) {
                   return LostGameMessage();
-                } else
+                } else if (merchantState is MerchantDidAction ||
+                    merchantState is MerchantInitial) {
                   return GameInterface(
                     merchantState: merchantState,
                   );
+                }
+                return Container();
               },
             ),
             SizedBox(

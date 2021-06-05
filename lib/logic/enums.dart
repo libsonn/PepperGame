@@ -1,0 +1,1 @@
+enum TypeOfTransaction { PurchaseTransaction, SaleTransaction }

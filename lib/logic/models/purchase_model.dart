@@ -1,33 +1,34 @@
-abstract class Purchase {
-  final double pepperPrice;
-  final bool isSuccessful;
-  final int quantityToBuy;
+import 'package:pepper_game/logic/enums.dart';
+import 'package:pepper_game/logic/models/transaction_model.dart';
 
-  double get totalPrice => pepperPrice * quantityToBuy;
+abstract class Purchase extends Transaction {
+  double get totalPrice => pepperPrice * quantity;
 
   double get toPay;
 
   int get quantityBought;
 
-  Purchase(
-    this.isSuccessful,
-    this.pepperPrice,
-    this.quantityToBuy,
-  );
+  Purchase({double pepperPrice, int quantity, bool isSuccessful})
+      : super(
+          pepperPrice: pepperPrice,
+          quantity: quantity,
+          isSuccessful: isSuccessful,
+          typeOfTransaction: TypeOfTransaction.PurchaseTransaction,
+        );
 }
 
 class PurchaseSuccessful extends Purchase {
   PurchaseSuccessful({
     double pepperPrice,
-    int quantityToBuy,
+    int quantity,
   }) : super(
-          true,
-          pepperPrice,
-          quantityToBuy,
+          pepperPrice: pepperPrice,
+          quantity: quantity,
+          isSuccessful: true,
         );
 
   @override
-  int get quantityBought => quantityToBuy;
+  int get quantityBought => quantity;
 
   @override
   double get toPay => totalPrice + 0.2;
@@ -36,11 +37,11 @@ class PurchaseSuccessful extends Purchase {
 class PurchaseUnsuccessful extends Purchase {
   PurchaseUnsuccessful({
     double pepperPrice,
-    int quantityToBuy,
+    int quantity,
   }) : super(
-          false,
-          pepperPrice,
-          quantityToBuy,
+          pepperPrice: pepperPrice,
+          quantity: quantity,
+          isSuccessful: false,
         );
 
   @override
